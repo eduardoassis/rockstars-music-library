@@ -3,7 +3,7 @@
 Technologies used:
 
 - Spring Boot 3.2.0
-- Spring Data MongoDB
+- Spring Data
 - Lombok
 - Postgres SQL
 
