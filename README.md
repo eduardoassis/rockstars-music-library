@@ -4,6 +4,7 @@ Technologies used:
 
 - Spring Boot 3.2.0
 - Spring Data
+- Docker and docker-compose
 - Lombok
 - Postgres SQL
 
