@@ -5,7 +5,7 @@ Technologies used:
 - Spring Boot 3.2.0
 - Spring Data MongoDB
 - Lombok
-- Mongo
+- Postgres SQL
 
 To run this application follow the steps bellow:
 
