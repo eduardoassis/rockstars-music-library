@@ -4,6 +4,7 @@ package com.rockstars.musiclibrary.api.controller;
 import com.rockstars.musiclibrary.api.SongApi;
 import com.rockstars.musiclibrary.dto.SongDTO;
 import com.rockstars.musiclibrary.exception.MusicLibraryException;
+import com.rockstars.musiclibrary.model.YearQueryParam;
 import com.rockstars.musiclibrary.service.SongService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -27,9 +29,9 @@ public class SongController implements SongApi {
     private final SongService songService;
 
     @Override
-    public ResponseEntity<Page<SongDTO>> getAll(String genre, Integer year, int page, int size) {
+    public ResponseEntity<Page<SongDTO>> getAll(String genre, Integer year, YearQueryParam comparative, int page, int size) {
         return ResponseEntity.ok(songService
-                .findAll(genre, year, PageRequest.of(page, size))
+                .findAll(genre, year, comparative, PageRequest.of(page, size))
                 .map(song -> modelMapper.map(song, SongDTO.class)));
     }
 

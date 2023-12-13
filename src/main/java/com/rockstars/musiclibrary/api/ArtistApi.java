@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface ArtistApi {
 
-    @GetMapping(
-            value = "/api/artists",
-            produces = {MediaType.APPLICATION_JSON_VALUE},
-            consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(value = "/api/artists", produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<Page<ArtistDTO>> getAll(@RequestParam(required = false) String name,
                                            @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size);
@@ -43,8 +40,7 @@ public interface ArtistApi {
 
     @PutMapping(
             value = "/api/artists",
-            produces = {MediaType.APPLICATION_JSON_VALUE},
-            consumes = { MediaType.APPLICATION_JSON_VALUE })
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<ArtistDTO> update(@Valid @RequestBody ArtistDTO artistDTO);
 

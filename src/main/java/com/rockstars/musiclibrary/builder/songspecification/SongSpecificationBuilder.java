@@ -1,9 +1,8 @@
 package com.rockstars.musiclibrary.builder.songspecification;
 
 import com.rockstars.musiclibrary.model.Song;
+import com.rockstars.musiclibrary.model.YearQueryParam;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.Objects;
 
 public class SongSpecificationBuilder {
 
@@ -16,13 +15,17 @@ public class SongSpecificationBuilder {
             return this;
         }
 
-        public Builder year(Integer year) {
-            specification = YearSpecification.getSpecification(specification, year);
+        public Builder year(Integer year, YearQueryParam comparative) {
+            specification = YearSpecification.getSpecification(specification, year, comparative);
             return this;
         }
 
         public Specification<Song> build() {
             return specification;
+        }
+
+        public Builder comparative() {
+            return null;
         }
     }
 }

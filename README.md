@@ -17,13 +17,13 @@ $ mvn verify
 ```
 
 
-First go to the main directory of the application then run the commands:
+Then go to the main directory of the application then run the commands:
 
 ```shell
 $ mvn package
 ```
 
-After creating the application run:
+After creating the application, execute the commands bellow to run the database and the application:
 
 ```shell
 $ docker-compose build
