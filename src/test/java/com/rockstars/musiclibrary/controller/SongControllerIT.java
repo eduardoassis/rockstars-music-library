@@ -43,11 +43,6 @@ class SongControllerIT extends AbstractIntegrationTest {
     private ModelMapper modelMapper;
 
     @Override
-    public void deleteAll() {
-        songRepository.deleteAll();
-    }
-
-    @Override
     public void initDataBase() {
         var song = Song.builder()
             .album("Acústico MTV 2 - Gafieira")

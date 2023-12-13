@@ -1,5 +1,6 @@
 package com.rockstars.musiclibrary.model;
 
+import com.rockstars.musiclibrary.dto.ArtistDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,4 +29,8 @@ public class Artist {
 
     @Column(unique = true, nullable = false)
     private String name;
+
+    public void update(ArtistDTO dto) {
+        this.name = dto.getName();
+    }
 }

@@ -1,6 +1,7 @@
 package com.rockstars.musiclibrary.caching;
 
 
+import com.rockstars.musiclibrary.model.YearQueryParam;
 import com.rockstars.musiclibrary.service.ArtistService;
 import com.rockstars.musiclibrary.service.SongService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class CacheScheduleTask {
         log.info("Refreshing the cache");
         clearSongs();
         clearArtists();
-        songService.findAll("Metal", 2016, PageRequest.ofSize(100));
+        songService.findAll("Metal", 2016, YearQueryParam.BEFORE_INCL, PageRequest.ofSize(100));
         artistService.findAll(PageRequest.ofSize(100));
     }
 

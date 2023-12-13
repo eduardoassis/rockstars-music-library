@@ -1,6 +1,7 @@
 package com.rockstars.musiclibrary.api;
 
 import com.rockstars.musiclibrary.dto.SongDTO;
+import com.rockstars.musiclibrary.model.YearQueryParam;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,10 @@ public interface SongApi {
 
     @GetMapping(
             value = "/api/songs",
-            produces = {MediaType.APPLICATION_JSON_VALUE},
-            consumes = { MediaType.APPLICATION_JSON_VALUE })
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<Page<SongDTO>> getAll(@RequestParam(required = false) String genre,
                                          @RequestParam(required = false) Integer year,
+                                         @RequestParam(required = false, defaultValue = "BEFORE_INCL") YearQueryParam comparative,
                                          @RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "10") int size);
 

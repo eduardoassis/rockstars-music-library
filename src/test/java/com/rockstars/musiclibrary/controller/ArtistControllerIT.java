@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -34,11 +35,6 @@ class ArtistControllerIT extends AbstractIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Override
-    public void deleteAll() {
-        artistRepository.deleteAll();
-    }
 
     @Override
     public void initDataBase() {
@@ -82,29 +78,31 @@ class ArtistControllerIT extends AbstractIntegrationTest {
 
     @Test
     void shouldNotCreateWithAnExistingName() throws Exception {
-        var artist = ArtistDTO.builder().name("Zeca Pagodinho").build();
+        var artist = Artist.builder().name("Bezerra da Silva").build();
+        artistRepository.save(artist);
+        var dto = ArtistDTO.builder().name("Bezerra da Silva").build();
         var result = mvc.perform(post("/api/artists")
-            .content(objectMapper.writeValueAsString(artist))
+            .content(objectMapper.writeValueAsString(dto))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isConflict())
         .andReturn();
         var errorMessage = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
         assertNotNull(errorMessage);
-        assertEquals("The id and name cannot be duplicated", errorMessage.getMessage());
+        assertEquals("There is one or more fields that are unique, please review the request values.", errorMessage.getMessage());
     }
 
     @Test
     void shouldRetrieveArtistById() throws Exception {
-        var createdArtist = artistRepository.findOne(Example.of(Artist.builder().name("Zeca Pagodinho").build()));
-        var result = mvc.perform(get("/api/artists/" + createdArtist.get().getId())
+        var createdArtist = artistRepository.save(Artist.builder().name("Martinho da Vila").build());
+        var result = mvc.perform(get("/api/artists/" + createdArtist.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andReturn();
         ArtistDTO retrievedArtist = objectMapper.readValue(result.getResponse().getContentAsString(), ArtistDTO.class);
         assertNotNull(retrievedArtist);
-        assertEquals(createdArtist.get().getName(), retrievedArtist.getName());
+        assertEquals(createdArtist.getName(), retrievedArtist.getName());
     }
 
     @Test
@@ -128,13 +126,17 @@ class ArtistControllerIT extends AbstractIntegrationTest {
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
+
+        var updatedArtist = artistRepository.findById(createdArtist.get().getId());
+        assertTrue(updatedArtist.isPresent());
+        assertEquals(dto.getName(), updatedArtist.get().getName());
     }
 
     @Test
     void shouldNotUpdateWithAnEmptyName() throws Exception {
-        var createdArtist = artistRepository.findOne(Example.of(Artist.builder().name("Zeca Pagodinho").build()));
+        var artist = artistRepository.findAll().get(0);
         var dto = ArtistDTO.builder()
-                .id(createdArtist.get().getId())
+                .id(artist.getId())
                 .build();
         var result = mvc.perform(put("/api/artists")
                         .content(objectMapper.writeValueAsString(dto))
@@ -156,6 +158,8 @@ class ArtistControllerIT extends AbstractIntegrationTest {
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNoContent())
         .andReturn();
+
+        assertFalse(artistRepository.findById(createdArtist.getId()).isPresent());
     }
 
 }

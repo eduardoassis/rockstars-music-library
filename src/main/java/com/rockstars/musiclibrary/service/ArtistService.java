@@ -36,8 +36,12 @@ public class ArtistService {
         return artistRepository.findById(id);
     }
 
-    public void update(Artist artist) {
-        artistRepository.save(artist);
+    public Artist update(Artist artist, ArtistDTO artistDTO) {
+        artist.update(artistDTO);
+        return artistRepository.save(artist);
     }
 
+    public void delete(Artist artist) {
+        artistRepository.delete(artist);
+    }
 }
