@@ -40,8 +40,14 @@ docker-compose down --rmi all
 docker-compose up --build
 ```
 
-Rockstars-Music-Library-JWT-API.postman_collection.json
+## API Specification
 
 Go to: http://localhost:8080/actuator/health, and check whether the application is running!
 
 Find the api definition here: http://localhost:8080/swagger-ui/index.html#/
+
+## Postman Collection
+
+A Postman collection for executing REST calls to the API can be found in the [`utils`](utils/Rockstars-Music-Library-JWT-API.postman_collection.json) directory.
+
+You can directly access the collection file here: [Rockstars-Music-Library-JWT-API.postman_collection.json](utils/Rockstars-Music-Library-JWT-API.postman_collection.json)
