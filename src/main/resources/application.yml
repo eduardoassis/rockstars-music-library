@@ -1,0 +1,53 @@
+springdoc:
+  show-actuator: true
+
+jwt:
+  secret: RockstarsMusicLibrarSecretJwtKey
+  expiration: 86400
+
+spring:
+  main:
+    lazy-initialization: true
+  cache:
+    type: redis
+    cache-names:
+      - songs
+      - artists
+      - getAllArtists
+    redis:
+      time-to-live: 900s # 15 minutes
+      cache-null-values: false
+      use-key-prefix: true
+      key-prefix: "musiclibrary:"
+  data:
+    redis:
+      host: redis-cache
+      port: 6379
+  datasource:
+    hikari:
+      max-lifetime: 1000
+      connection-timeout: 1000
+      validation-timeout: 1000
+      maximum-pool-size: 5
+    url: jdbc:postgresql://postgres-db:5432/musiclibrary
+    username: compose-postgres
+    password: compose-postgres
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: true
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: update
+
+
+logging:
+  level:
+    com.rockstars.musiclibrary: INFO
+    org.springframework.cache: DEBUG
+server:
+  http2:
+    enabled: true
